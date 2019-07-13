@@ -1,0 +1,134 @@
+ <div class="card">
+  <div class="card-header text-right">
+    <button type="button" (click)="showModal()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button> 
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped table-hover bg-white">
+      <thead class="bg-info">
+        <tr>
+          <!-- <th>Mã Thí Sinh</th> -->
+          <th>Họ tên</th>
+          <th>Giới Tính</th>
+          <th>Ngày sinh</th>
+          <th>Số điện thoại</th>
+          <th>Email</th>
+          <th>Địa Chỉ</th>
+          <!-- <th style="width:70px;"></th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of Takers">
+          <!-- <td>{{row.takid}}</td> -->
+          <td>{{row.takfirstname + " " +row.taklastname}}</td>
+          <ng-container *ngIf="row.takgender==true ;else nu">
+            <td>Nam</td>
+          </ng-container>          
+          <ng-template #nu>
+            <td>Nữ</td>
+          </ng-template>
+          <td>{{row.takdob | date:'yyyy-MM-dd'}}</td>
+          <td>{{row.takphone}}</td>
+          <td>{{row.takemail}}</td>
+          <td>{{row.takaddress}}</td>
+           <td>
+            <a href="#" (click)="showModal($event, row.id)"><i class="fa fa-info-circle"></i></a>
+            <a href="#" (click)="confirmDelete($event, row.id)"><i class="fa fa-trash-o text-danger"></i></a>
+          </td> 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+ <div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><i class="fa fa-taker">Thí Sinh</i></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Mã Thí Sinh</label>
+          <div class="col-sm-9">
+            <select id="field_8" class="form-control d-inline" [(ngModel)]="taker.takT_ID" >
+              <ng-container *ngFor="let item1 of takertypes; let i = index">
+                  <option  [value]="item1.id">{{item1.taktname}}</option>
+              </ng-container>
+            </select>
+            <a href="#" class="text-success pl-2" id="edit_8" (click)="Edit($event,8)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+                <span id="valid_mes_3" class="invalid-feedback"></span>
+            <input type="text" id="field_1" class="form-control d-inline" [(ngModel)]="Taker.takid" placeholder="Account">
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Họ và tên</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control d-inline" id="field3" [(ngModel)]="Taker.takfirstname" placeholder="First Name">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control d-inline" id="field_3" [(ngModel)]="Taker.taklastname" placeholder="Last Name">
+            <a href="#" class="text-success pl-2" id="edit_3"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,3)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Sinh Nhật</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control d-inline"id="field_4" [ngModel]="Taker.takdob | date:'yyyy-MM-dd'"
+            (input)="Taker.takdob=parseDate($event.target.value)" >
+            <a href="#" class="text-success pl-2" id="edit_4"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,4)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Gender</label>
+          <div class="col-sm-6">
+
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input"
+                [(ngModel)]="Taker.takgender" [value]="true" [checked]="Taker.takgender==true">
+              <label class="custom-control-label" for="customRadio1">Nam</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio2" name="customRadio" [(ngModel)]="Taker.takgender"
+                class="custom-control-input" [value]="false" [checked]="Taker.takgender==false">
+              <label class="custom-control-label" for="customRadio2">Nữ</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Email</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control d-inline" id="field_5"[(ngModel)]="Taker.takemail" placeholder="Email">
+            <a href="#" class="text-success pl-2" id="edit_5"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,5)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Số Điện Thoại</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control d-inline"  id="field_6" [(ngModel)]="Taker.takphone" placeholder="Phone">
+            <a href="#" class="text-success pl-2" id="edit_6"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,6)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Địa Chỉ</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control d-inline" id="field_7" [ngModel]="Taker.takaddress" placeholder="Address">
+            <a href="#" class="text-success pl-2" id="edit_7"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,7)"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="close()" class="btn btn-primary">Close</button>
+        <button type="button" (click)="save()" class="btn btn-success">Save</button>
+      </div>
+    </div>
+  </div> 

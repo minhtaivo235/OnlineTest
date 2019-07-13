@@ -1,0 +1,198 @@
+<div class="card" id="top">
+  <div class="card-body">
+    <table class="table table-bordered table-striped table-hover bg-white">
+      <thead class="bg-info">
+        <tr>
+          <th class="w-50">Thông tin thí sinh</th>
+          <th>Thông tin kiểm tra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <td>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Họ và tên</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control d-inline" id="field3" [(ngModel)]="Taker.takfirstname"
+                placeholder="Họ...">
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control d-inline" id="field_3" [(ngModel)]="Taker.taklastname"
+                placeholder="Tên...">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Ngày sinh</label>
+            <div class="col-sm-9">
+              <input type="date" class="form-control d-inline" id="field_4" [ngModel]="Taker.takdob | date:'yyyy-MM-dd'"
+                (input)="Taker.takdob=parseDate($event.target.value)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Giới tính</label>
+            <div class="col-sm-6">
+
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_1" name="customRadio" class="custom-control-input"
+                  [(ngModel)]="Taker.takgender" [value]="true" [checked]="Taker.takgender==true">
+                <label class="custom-control-label" for="field_1">Nam</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_2" name="customRadio" [(ngModel)]="Taker.takgender"
+                  class="custom-control-input" [value]="false" [checked]="Taker.takgender==false">
+                <label class="custom-control-label" for="field_2">Nữ</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control d-inline" id="field_5" [(ngModel)]="Taker.takemail"
+                placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Số điện thoại</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control d-inline" id="field_6" [(ngModel)]="Taker.takphone"
+                placeholder="Phone">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Địa chỉ</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control d-inline" id="field_7" [ngModel]="Taker.takaddress"
+                placeholder="Address">
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nhóm thi</label>
+            <div class="col-sm-10">
+              <select id="drop" class="form-control d-inline" [(ngModel)]="gtid">
+                <ng-container *ngFor="let item of grouptests;">
+                  <option value="{{item.id}}">{{'Lớp ' + item.groups.grpname + ' - Bài thi ' + item.tests.testitle}}
+                  </option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <a href="#" (click)="save($event)" id="start_btn" class="btn btn-success">Bắt đầu thi</a>
+          <hr>
+          <p style="display: none;" id="point">Điểm: <span style="color: red;">{{point}}</span> / 10</p>
+        </td>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngFor="let item of questions; let i = index">
+      <div class="mt-1 mb-1 bg-white border">
+        <div class="row ml-2 mr-2 pt-3 pb-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col">
+                <span class="font-weight-bold">Môn học: </span>
+                <span>{{item.suB_NAME}}</span>
+              </div>
+              <div class="col">
+                <span class="font-weight-bold">Học phần: </span>
+                <span>{{item.paR_NAME}}</span>
+              </div>
+              <div class="col">
+                <span class="font-weight-bold">Loại câu hỏi: </span>
+                <span>{{item.ansT_NAME}}</span>
+              </div>
+              <div class="col">
+                <span class="font-weight-bold">Điểm: </span>
+                <span>{{item.quescore}}</span>
+              </div>
+              <div class="col">
+                <span class="font-weight-bold">Độ khó: </span>
+                <span>{{item.quelevel}}</span>
+              </div>
+            </div>
+            <hr style="border: 0.5px radius rgb(230, 227, 227)">
+          </div>
+          <!-- Question -->
+          <div class="col-12">
+            <p>
+              <span class="font-weight-bold">{{'Câu ' + (i+1) + ': '}}</span>
+              <span [innerHTML]="item.quecontent"></span>
+            </p>
+            <hr style="border: 0.5px dashed rgb(230, 227, 227)" class="ml-5 mr-5">
+          </div>
+
+          <ng-container *ngIf="item.ansT_ID == 2">
+            <ng-container *ngFor="let item1 of item.list_option; let i = index">
+              <div class="offset-1 col-5 mt-2">
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="{{'option_' + item1.id}}" name="{{'answer_box_' + item.id}}"
+                      class="custom-control-input">
+                  <ng-container [ngSwitch]="i">
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="0">A.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="1">B.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="2">C.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="3">D.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="4">E.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="5">F.
+                      {{item1.optcontent}}</label>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="item.ansT_ID == 3">
+            <ng-container *ngFor="let item1 of item.list_option; let i = index">
+              <div class="offset-1 col-5 mt-2">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" id="{{'option_' + item1.id}}" name="{{'answer_box_' + item.id}}"
+                      class="custom-control-input">
+                  <ng-container [ngSwitch]="i">
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="0">A.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="1">B.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="2">C.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="3">D.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="4">E.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="5">F.
+                      {{item1.optcontent}}</label>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="item.ansT_ID == 4">
+            <ng-container *ngFor="let item1 of item.list_option; let i = index">
+              <div class="offset-1 col-5 mt-2">
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="{{'option_' + item1.id}}" name="{{'answer_box_' + item.id}}"
+                      class="custom-control-input">
+                  <ng-container [ngSwitch]="i">
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="0">A.
+                      {{item1.optcontent}}</label>
+                    <label class="custom-control-label" for="{{'option_' + item1.id}}" *ngSwitchCase="1">B.
+                      {{item1.optcontent}}</label>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="card-footer m-auto">
+    <a href="#" class="btn btn-primary" id="submit-btn" (click)="submit_test($event)"><i class="fa fa-check">Nộp bài thi</i></a>
+  </div>
+</div>

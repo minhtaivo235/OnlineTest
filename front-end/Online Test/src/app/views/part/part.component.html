@@ -1,0 +1,178 @@
+<div id="body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center ">
+          <h3 class="text-center d-inline mx-auto align-middle">DANH SÁCH CÁC PHẦN THI</h3>
+          <a href="#" class="btn btn-primary position-absolute ml-1" style="left: 0.7rem;" (click)="showModal($event)">
+            <i class="fa fa-plus-circle"></i>
+            Thêm phần học
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <table id="part-table" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr class="bg-info text-center">
+              <th>STT</th>
+              <th>Mã học phần</th>
+              <th>Tên học phần</th>
+              <!-- <th>Thông tin hướng dẫn</th> -->
+              <th>Điểm</th>
+              <th>Độ khó</th>
+              <!-- <th>Ghi chú</th> -->
+              <th>Tùy chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of parts; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.parid}}</td>
+                <td id="{{'parname_' + item.id}}">{{item.parname}}</td>
+                <!-- <td>{{item.pardirection}}</td> -->
+                <td>{{item.pardefaulT_SCORE}}</td>
+                <td>{{item.pardefaulT_LEVEL}}</td>
+                <!-- <td>{{item.parnote}}</td> -->
+                <td>
+                  <a href="#" class="btn btn-info btn-sm" (click)="showModal($event, item.id)">
+                    <i class="fa fa-eye"></i>
+                  </a>
+                  <a href="#" class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash" (click)="open_Delete($event,item.id)"></i>
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><span id="modal_title"></span></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Mã phần học :</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control d-inline" [(ngModel)]="part.parid" placeholder="Mã phần học..."
+              id="field_1" (blur)="validate_parid()">
+            <span id="valid_mes_1" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_1"><i class="fa fa-pencil-square-o fa-2x align-middle"
+                (click)="Edit($event,1)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Tên phần học :</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control d-inline" [(ngModel)]="part.parname" placeholder="Tên phần học..."
+              id="field_2" (blur)="validate_parname()">
+            <span id="valid_mes_2" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_2"><i class="fa fa-pencil-square-o fa-2x align-middle"
+                (click)="Edit($event,2)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Thuộc môn học :</label>
+          <div class="col-sm-8">
+            <select id="field_3" class="form-control d-inline" [(ngModel)]="part.suB_ID" (blur)="validate_sub_id()">
+              <ng-container *ngFor="let item1 of subjects">
+                <ng-container *ngIf="!item1.subjectChild">
+                  <option value="{{item1.id}}">{{item1.subname}}</option>
+                  <ng-container *ngFor="let item2 of subjects">
+                    <ng-container *ngIf="item2.parenT_ID == item1.id">
+                      <option value="{{item2.id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{item2.subname}}</option>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </select>
+            <span id="valid_mes_3" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_3" (click)="Edit($event,3)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Hướng dẫn :</label>
+          <div class="col-sm-8">
+            <textarea cols="30" rows="5" class="form-control d-inline is-valid" [(ngModel)]="part.pardirection"
+              placeholder="Hướng dẫn..." id="field_4"></textarea>
+            <span id="valid_mes_4" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_4" (click)="Edit($event,4)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Điểm :</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control d-inline" [(ngModel)]="part.pardefaulT_SCORE" id="field_5" min="0"
+              max="10" step="0.25" (blur)="validate_pardefault_score()">
+            <span id="valid_mes_5" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_5" (click)="Edit($event,5)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Độ khó :</label>
+          <div class="col-sm-8">
+            <select class="form-control d-inline" id="field_6" [(ngModel)]="part.pardefaulT_LEVEL"
+              (blur)="validate_pardefault_level()">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <span id="valid_mes_6" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_6" (click)="Edit($event,6)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Ghi chú :</label>
+          <div class="col-sm-8">
+            <textarea cols="30" rows="5" class="form-control d-inline is-valid" [(ngModel)]="part.parnote"
+              placeholder="Ghi chú..." id="field_7"></textarea>
+            <span id="valid_mes_7" class="invalid-feedback"></span>
+            <a href="#" class="text-success pl-2" id="edit_7" (click)="Edit($event,7)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modal.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="save()" class="btn btn-success" id="button_modal"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Xóa học phần</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalDelete.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="delete_message"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modalDelete.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="delete()" class="btn btn-success">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="id_delete">

@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-lg">
+          <div class="card">
+              <div class="card-header">
+                  <!--card head-->
+                  <nav class="navbar navbar-expand-sm bg-light">
+                      <div class="navbar-branch ">
+                                   <h1>DANH SÁCH CÁC QUYỀN</h1>
+                      </div>
+
+                      <ul class="navbar-nav ml-auto">
+                          <li class="nav-item">
+                              <!--model create-->
+                              <button (click)="showModal($event)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create"><i
+                  class="fa fa-plus"></i> New</button>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
+
+              <!--card body-->
+              <div class="card-body">
+                  <table class="table table-bordered table-sm">
+                      <thead class="bg-primary text-light">
+                          <tr>
+                              <th>#</th>
+                              <th>Name</th>
+                              <th>URL</th>
+                              <th>Parent</th>
+                              <th>Note</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let item of Privileges; let i = index">
+                              <td>{{i+1}}</td>
+                              <td id="{{'Priname_' + item.id}}">{{item.priname}}</td>
+                              <td>{{item.priurl}}</td>
+                              <td>{{item.priparent}}</td>
+                              <td>{{item.prinote}}</td>
+                              <td>
+                                  <!--model edit-->
+                                  <button (click)="showModal($event, item.id)" type="button" class="btn btn-secondary fa fa-edit" data-toggle="modal" data-target="#edit1"></button>
+                                  <button (click)="open_Delete($event, item.id)" type=" button " class="btn btn-danger fa fa-times "></button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+<hr>
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">Sửa</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Name</label>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control" [(ngModel)]="Privilege.priname" placeholder="Name">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">URL</label>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control" [(ngModel)]="Privilege.priurl" placeholder="Code">
+                  </div>
+              </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Cha</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" [(ngModel)]="Privilege.priparent" placeholder="Code">
+                </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Note</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control" [(ngModel)]="Privilege.prinote" placeholder="Code">
+              </div>
+          </div>
+
+          </div>
+          <div class="modal-footer">
+              <button type="button" (click)="modal.hide()" class="btn btn-danger">Cancel</button>
+              <button type="button" (click)="save()" class="btn btn-success">Save</button>
+          </div>
+      </div>
+  </div>
+</div>
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">Xóa </h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalDelete.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <span id="delete_message"></span>
+          </div>
+          <div class="modal-footer">
+              <button type="button" (click)="modalDelete.hide()" class="btn btn-danger">Cancel</button>
+              <button type="button" (click)="delete()" class="btn btn-success">OK</button>
+          </div>
+      </div>
+  </div>
+</div>
+<input type="hidden" id="id_delete">

@@ -1,0 +1,315 @@
+<li class="nav-item">
+  <button type="button" class="btn btn-primary fa fa-plus" data-toggle="modal"
+      data-target="#create"></button>
+      <button type="button" class="btn btn-primary fa fa-edit" data-toggle="modal"
+      data-target="#update"></button>
+</li>
+<div class="modal" id="create">
+  <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+              <h4 class="modal-title">Question & Answers</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+              <form>
+                  <div class="row form-inline form-group">
+                      <!--Subject-->
+                      <label class="col-3 col-lg-3" for="g">Subject</label>
+                      <select name="cars" class="custom-select">
+                          <option selected>English</option>
+                          <option value="H">History</option>
+                          <option value="M">Math</option>
+                          <option value="G">Geography</option>
+                      </select>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Phần-->
+                      <label class="col-3 col-lg-3" for="g">Part</label>
+                      <select name="cars" class="custom-select">
+                          <option selected>1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                      </select>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Nội dung-->
+                      <label class="col-3 col-lg-3" for="ct">Content</label>
+                      <textarea class="form-control col-9 col-lg-9" placeholder="content..." value="" name="ct"></textarea>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Score-->
+                      <label class="col-3 col-lg-3" for="sc">Score </label>
+                      <input class="form-control col-9 col-lg-9" placeholder="Score" value="" name="sc">
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Chia Cột-->
+                      <label class="col-3 col-lg-3" for="col">Column</label>
+                      <select name="cars" class="custom-select">
+                          <option selected>1</option>
+                          <option value="2">2</option> 
+                          <option value="4">4</option>
+                      </select>
+
+                      <label class="col-3 col-lg-3" for="level">Level</label>
+                      <select name="cars" class="custom-select">
+                          <option selected>1</option>
+                          <option value="2">2</option> 
+                          <option value="3">3</option> 
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                      </select>
+                  </div>
+
+
+                  <strong><hr noshade="noshade"></strong>
+
+                  <div class="row form-inline form-group">
+                      <!--Label-->
+                      <label class="col-3 col-lg-3" >Answer Type</label>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Options-->
+                      <label class="col-3 col-lg-3" for="col">Options</label>
+                      <select name="cars" class="custom-select">
+                          <option selected>One choice</option>
+                          <option value="mc">Multi Choice</option> 
+                          <option value="tf">True-False</option>
+                      </select>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!--Answer 1-->
+                      <label class="col-3 col-lg-3" for="active">Answer 1</label>
+                      <textarea class="form-control col-5 col-lg-5" placeholder="answer1..." value="" name="ans1"></textarea>
+                      <div class="radio col-2">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="corr" checked>
+                            Correct
+                          </label>
+                        </div>
+                        <div class="radio col-2">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="wro">
+                            Wrong
+                          </label>
+                        </div>
+                  </div>
+                  
+                  <div class="row form-inline form-group">
+                      <!--Answer 2-->
+                      <label class="col-3 col-lg-3" for="active">Answer 2</label>
+                      <textarea class="form-control col-5 col-lg-5" placeholder="answer1..." value="" name="ans2"></textarea>
+                      <div class="radio2 col-2">
+                          <label>
+                            <input type="radio" name="optionsRadios2" id="optionsRadios3" value="corr" checked>
+                            Correct
+                          </label>
+                        </div>
+                        <div class="radio2 col-2">
+                          <label>
+                            <input type="radio" name="optionsRadios2" id="optionsRadios4" value="wro">
+                            Wrong
+                          </label>
+                        </div>
+                  </div>
+
+                  <div class="row form-inline form-group">
+                      <!-- + -->
+                      <div class="col-12">
+                      <a href="#" type="button" class="btn btn-primary fa fa-plus float-right"></a>
+                      </div>
+                  </div>
+              </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+          </div>
+      </div>
+
+
+
+  </div>
+</div>
+
+<div class="modal" id="update">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">The mausoleum is ................. by Thien Thu mountain, two towering columns and a vast expanse of wate</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+  
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="row form-inline form-group">
+                        <!--Subject-->
+                        <label class="col-3 col-lg-3" for="g">English</label>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Phần-->
+                        <label class="col-3 col-lg-3" for="g">Part</label>
+                        <select name="cars" class="custom-select">
+                            <option selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Nội dung-->
+                        <label class="col-3 col-lg-3" for="ct">Content</label>
+                        <textarea class="form-control col-9 col-lg-9" value="" name="ct">The mausoleum is ................. by Thien Thu mountain, two towering columns and a vast expanse of wate</textarea>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Score-->
+                        <label class="col-3 col-lg-3" for="sc">Score </label>
+                        <input class="form-control col-9 col-lg-9" placeholder="Score" value="5" name="sc">
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Chia Cột-->
+                        <label class="col-3 col-lg-3" for="col">Column</label>
+                        <select name="cars" class="custom-select">
+                            <option selected>1</option>
+                            <option value="2">2</option> 
+                            <option value="4">4</option>
+                        </select>
+  
+                        <label class="col-3 col-lg-3" for="level">Level</label>
+                        <select name="cars" class="custom-select">
+                            <option selected>1</option>
+                            <option value="2">2</option> 
+                            <option value="3">3</option> 
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+  
+  
+                    <strong><hr noshade="noshade"></strong>
+  
+                    <div class="row form-inline form-group">
+                        <!--Label-->
+                        <label class="col-3 col-lg-3" >Answer Type</label>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Options-->
+                        <label class="col-3 col-lg-3" for="col">Options</label>
+                        <select name="cars" class="custom-select">
+                            <option selected>One choice</option>
+                            <option value="mc">Multi Choice</option> 
+                            <option value="tf">True-False</option>
+                        </select>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!--Answer 1-->
+                        <label class="col-3 col-lg-3" for="active">Answer 1</label>
+                        <textarea class="form-control col-5 col-lg-5" placeholder="answer1..." value="" name="ans1">feed</textarea>
+                        <div class="radio col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios" id="optionsRadios1" value="corr" >
+                              Correct
+                            </label>
+                          </div>
+                          <div class="radio col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="wro"  checked>
+                              Wrong
+                            </label>
+                          </div>
+                    </div>
+                    
+                    <div class="row form-inline form-group">
+                        <!--Answer 2-->
+                        <label class="col-3 col-lg-3" for="active">Answer 2</label>
+                        <textarea class="form-control col-5 col-lg-5" placeholder="answer1..." value="" name="ans2">feeding</textarea>
+                        <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios2" id="optionsRadios3" value="corr">
+                              Correct
+                            </label>
+                          </div>
+                          <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios2" id="optionsRadios4" value="wro"  checked>
+                              Wrong
+                            </label>
+                          </div>
+                    </div>
+
+                    <div class="row form-inline form-group">
+                        <!--Answer 3-->
+                        <label class="col-3 col-lg-3" for="active">Answer 3</label>
+                        <textarea class="form-control col-5 col-lg-5"  value=" " name="ans3">fed</textarea>
+                        <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios3" id="optionsRadios3" value="corr" checked>
+                              Correct
+                            </label>
+                          </div>
+                          <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios3" id="optionsRadios4" value="wro"  >
+                              Wrong
+                            </label>
+                          </div>
+                    </div>
+
+                    <div class="row form-inline form-group">
+                        <!--Answer 3-->
+                        <label class="col-3 col-lg-3" for="active">Answer 4</label>
+                        <textarea class="form-control col-5 col-lg-5"  value=" " name="ans4">feeds</textarea>
+                        <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios4" id="optionsRadios3" value="corr" >
+                              Correct
+                            </label>
+                          </div>
+                          <div class="radio2 col-2">
+                            <label>
+                              <input type="radio" name="optionsRadios4" id="optionsRadios4" value="wro"  checked>
+                              Wrong
+                            </label>
+                          </div>
+                    </div>
+  
+                    <div class="row form-inline form-group">
+                        <!-- + -->
+                        <div class="col-12">
+                        <a href="#" type="button" class="btn btn-primary fa fa-plus float-right"></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+  
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+  
+  
+  
+    </div>
+  </div>

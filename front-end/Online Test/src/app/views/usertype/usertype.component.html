@@ -1,0 +1,77 @@
+<div class="card">
+  <div class="card-header text-right">
+    <button type="button" (click)="showModal()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped table-hover bg-white">
+      <thead class="bg-info">
+        <tr>
+          <th>User Type name</th>
+          <th>User Type isadmin</th>
+          <th>User Type note</th>
+          <th style="width:70px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of usertypes">
+          <td>{{row.usetname}}</td>
+          <td>{{row.usetisadmin}}</td>
+          <td>{{row.usetnote}}</td>
+          <td>
+            <a href="#" (click)="showModal($event, row.id)"><i class="fa fa-info-circle"></i></a>           
+            <a href="#" (click)="confirmDelete($event, row.id)"><i class="fa fa-trash-o text-danger"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">User Type</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">User Type Name</label>
+          <div class="col-sm-9">
+            <input type="text" id="field_1"  class="form-control d-inline" [(ngModel)]="usertype.usetname" placeholder="User Type Name">
+            <a href="#" class="text-success pl-2" id="edit_1"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,1)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Admin</label>
+          <div class="col-sm-9">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" [(ngModel)]="usertype.usetisadmin" [value]="true" [checked]="usertype.usetisadmin==true">
+              <label class="custom-control-label" for="customRadio1">Yes</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio2" name="customRadio" [(ngModel)]="usertype.usetisadmin" class="custom-control-input" [value]="false"[checked]="usertype.usetisadmin==false">
+              <label class="custom-control-label" for="customRadio2">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">User Type Note</label>
+          <div class="col-sm-9">
+            <input type="text" id="field_2"  class="form-control d-inline" [(ngModel)]="usertype.usetnote" placeholder="User Type Note">
+            <a href="#" class="text-success pl-2" id="edit_2"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,2)"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <div *ngIf="usertype.usetisadmin =='' ">
+        <button type="button" (click)="edit()" class="btn btn-success"><i class="fa fa-edit">Edit</i></button>
+      </div> -->
+        <button type="button" (click)="save()" class="btn btn-success">Save</button>
+      </div>
+    </div>
+</div>

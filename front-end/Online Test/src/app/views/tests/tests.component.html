@@ -1,0 +1,219 @@
+<div id="body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center">
+          <h3 class="text-center d-inline mx-auto align-middle">DANH SÁCH BÀI KIỂM TRA</h3>
+          <a href="#" class="btn btn-primary position-absolute ml-1" style="left: 0.7rem;" (click)="showModal($event,0)"            >
+            <i class="fa fa-plus-circle"></i>
+            Thêm Bài Kiểm Tra
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <table class="table table-bordered table-sm table-striped text-center">
+          <!--Tiêu đề-->
+          <thead class="bg-primary text-light">
+            <tr>
+              <th>STT</th>              
+              <th>Tiêu đề</th>  
+              <th>Ngày thêm</th>  
+              <th>Thời gian</th>  
+              <th>Điểm tối đa</th>   
+              <th>Trạng thái</th> 
+              <th>Tình Trạng</th>             
+              <th>Tùy chọn</th>
+            </tr>
+          </thead>          
+          <tbody>
+            <ng-container *ngFor="let item of tests; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td id="{{'testname_' + item.id}}">{{item.testitle}}</td>
+                <td>{{item.tesdate | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.testime}}</td>
+                <td>{{item.tesmaX_SCORE}}</td>  
+                <td>{{item.tesisactive ? 'Đã mở' : 'Chưa mở'}}</td>             
+                <td>{{item.tesislocked ? 'Đã khóa' : 'Chưa khóa'}}</td>
+                <td>                 
+                  <a href="#" class="btn btn-info btn-sm" (click)="showModal($event, item.id)">
+                    <i class="fa fa-eye"></i>
+                  </a>
+                  <a class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash" (click)="open_Delete($event,item.id)"></i>
+                  </a>
+                </td>                
+              </tr>
+            </ng-container>           
+          </tbody>                         
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><span id="modal_title"></span></h4>       
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Môn học :</label>
+            <div class="col-sm-8">
+              <select id="field_1" class="form-control d-inline" [(ngModel)]="test.suB_ID" name="suB_ID">
+                <ng-container *ngFor="let item1 of subjects">
+                  <ng-container *ngIf="!item1.subjectChild">
+                    <option value="{{item1.id}}">{{item1.subname}}</option>
+                    <ng-container *ngFor="let item2 of subjects">
+                      <ng-container *ngIf="item2.parenT_ID == item1.id">
+                        <option value="{{item2.id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{item2.subname}}</option>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </select>
+                        
+            </div>
+          </div>          
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Người thêm :</label>
+            <div class="col-sm-8">
+              <select id="field_2" class="form-control d-inline" [(ngModel)]="test.usE_ID" name="usE_ID">
+                <ng-container *ngFor="let item3 of users">            
+                  <option value="{{item3.id}}">{{item3.usefirstname + item3.uselastname}}</option>                                      
+                </ng-container>
+              </select>
+                       
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Loại bài :</label>
+            <div class="col-sm-8">
+              <select id="field_3" class="form-control d-inline" [(ngModel)]="test.tesT_ID" name="tesT_ID" >
+                <ng-container *ngFor="let item2 of test_type">            
+                  <option value="{{ item2.id }}" >{{item2.testname}}</option>                                      
+                </ng-container>
+              </select>
+                         
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Học kỳ :</label>
+            <div class="col-sm-8">
+              <select id="field_4" class="form-control d-inline" [(ngModel)]="test.seM_ID" name="seM_ID">
+                <ng-container *ngFor="let item of sem">            
+                  <option value="{{item.id}}">{{'Học kỳ ' + item.semsemester + ' - Năm học ' + item.semyear}}</option>                                      
+                </ng-container>
+              </select>
+                         
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Tiêu đề</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control d-inline" [(ngModel)]="test.testitle" name="testitle" placeholder="Tiêu đề"
+                id="field_5" >
+                          
+            </div>
+          </div>    
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Ngày thêm</label>
+            <div class="col-sm-8">
+              <input type="date" class="form-control d-inline" name="tesdate" id="field_6"[ngModel]="test.tesdate| date:'yyyy-MM-dd'"
+              (input)="test.tesdate=parseDate($event.target.value)" >              
+            </div>
+          </div>      
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Thời gian kiểm tra</label>
+            <div class="col-sm-8">
+              <input type="number" min="5" class="form-control d-inline" [(ngModel)]="test.testime" name="testime" placeholder="Thời gian kiểm tra"
+                id="field_7" >
+                          
+            </div>
+          </div>          
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Tình trạng</label>
+            <div class="col-sm-6">  
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_8" name="customRadio1" class="custom-control-input"
+                  [(ngModel)]="test.tesisactive" [value]="true" [checked]="test.tesisactive==true">
+                <label class="custom-control-label" for="field_8">Đã mở</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_9" name="customRadio1" [(ngModel)]="test.tesisactive"
+                  class="custom-control-input" [value]="false" [checked]="test.tesisactive==false">
+                <label class="custom-control-label" for="field_9">Chưa mở</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Trạng thái</label>
+            <div class="col-sm-8">  
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_10" name="customRadio" class="custom-control-input"
+                  [(ngModel)]="test.tesislocked" [value]="true" [checked]="test.tesislocked==true">
+                <label class="custom-control-label" for="field_10">Đã khóa</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="field_11" name="customRadio" [(ngModel)]="test.tesislocked"
+                  class="custom-control-input" [value]="false" [checked]="test.tesislocked==false">
+                <label class="custom-control-label" for="field_11">Chưa khóa</label>
+              </div>
+            </div>
+          </div>         
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Điểm tối đa</label>
+            <div class="col-sm-8">                
+              <input type="number" min="10" max="100" class="form-control d-inline" [(ngModel)]="test.tesmaX_SCORE"
+                id="field_12" name="tesmaX_SCORE" >
+                         
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Ghi chú</label>
+            <div class="col-sm-8">                
+                <textarea cols="30" rows="5" class="form-control d-inline is-valid" [(ngModel)]="test.tesnote" name="tesnote"
+                placeholder="Ghi chú..." id="field_13" maxlength="400"></textarea>
+                          
+            </div>
+          </div>
+          
+        </form>
+      </div>    
+      <div class="modal-footer">          
+          <button id="lock" type="button" (click)="unlock()" class="btn btn-dark">Unlock</button>
+          <button type="button" (click)="modal.hide()" class="btn btn-danger">Cancel</button>
+          <button type="button" (click)="save()" class="btn btn-success">OK</button>
+      </div>
+    </div>
+  </div>  
+</div> 
+          
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Xóa bài kiểm tra</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalDelete.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="delete_message"></span>
+      </div>
+      <div class="modal-footer">        
+        <button type="button" (click)="modalDelete.hide()" class="btn btn-danger">Cancel</button>
+        <button type="button" (click)="delete()" class="btn btn-success">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="id_delete">

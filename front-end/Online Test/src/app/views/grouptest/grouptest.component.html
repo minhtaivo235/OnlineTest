@@ -1,0 +1,132 @@
+<div id="body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center ">
+          <h3 class="text-center d-inline mx-auto align-middle">DANH SÁCH CÁC PHẦN THI</h3>
+          <a href="#" class="btn btn-primary position-absolute ml-1" style="left: 0.7rem;" (click)="showModal($event)">
+            <i class="fa fa-plus-circle"></i>
+            Thêm nhóm thi
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <table id="part-table" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr class="bg-info text-center">
+                <th>STT</th>
+                <th>Tên lớp</th>
+                <th>Tên bài kiểm tra</th>
+                <th>Trạng thái</th>
+                <th>Ngày thi</th>
+                <th>Tùy chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of grouptests; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.groups.grpname}}</td>
+                <td>{{item.tests.testitle}}</td>
+                <ng-container *ngIf="item.grptstatus == 1; else block">
+                  <td style="color: green">Kích hoạt</td>
+                </ng-container>
+                <ng-template #block>
+                  <td style="color: red">Khóa</td>
+                </ng-template>
+                <td>{{item.grptdate | date:'dd-MM-yyyy'}}</td>
+                <td>
+                  <a href="#" class="btn btn-warning btn-sm" (click)="showModal($event, item.id)">
+                    <i class="fa fa-pencil-square-o"></i>
+                  </a>
+                  <a href="#" (click)="open_Delete($event,item.id)" class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><span id="modal_title"></span></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Bài thi :</label>
+          <div class="col-sm-8">
+            <select [(ngModel)]="grouptest.teS_ID" class="form-control">
+              <ng-container *ngFor="let item of tests">
+                <option value="{{item.id}}">{{item.testitle}}</option>
+              </ng-container>
+            </select>
+            <span id="valid_mes_1" class="invalid-feedback"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Lớp thi :</label>
+          <div class="col-sm-8">
+            <select [(ngModel)]="grouptest.grP_ID" class="form-control">
+              <ng-container *ngFor="let item of groups">
+                  <option value="{{item.id}}">{{item.grpname}}</option>
+              </ng-container>
+            </select>
+            <span id="valid_mes_2" class="invalid-feedback"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Trạng thái :</label>
+          <div class="col-sm-8">
+            <select [(ngModel)]="grouptest.grptstatus" class="form-control">
+              <option value="1" selected>Active</option>
+              <option value="0">Block</option>
+            </select>
+            <span id="valid_mes_3" class="invalid-feedback"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Ngày thi :</label>
+          <div class="col-sm-8">
+            <input class="form-control" type="date" [ngModel]="grouptest.grptdate| date:'yyyy-MM-dd'" (input)="grouptest.grptdate=parseDate($event.target.value)">
+            <span id="valid_mes_4" class="invalid-feedback"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modal.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="save()" class="btn btn-success" id="button_modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Xóa nhóm thi</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalDelete.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="delete_message"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modalDelete.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="delete()" class="btn btn-success">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="id_delete">

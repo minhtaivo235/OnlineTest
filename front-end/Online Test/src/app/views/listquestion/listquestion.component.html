@@ -1,0 +1,678 @@
+<div id="body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center ">
+          <h3 class="text-center d-inline mx-auto align-middle">DANH SÁCH CÁC PHẦN THI</h3>
+          <a href="#" class="btn btn-primary position-absolute ml-1" style="left: 0.7rem;" (click)="showModal($event)">
+            <i class="fa fa-plus-circle"></i>
+            Thêm câu hỏi
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <table id="example" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr class="bg-info text-center">
+              <th>STT</th>
+              <th>Môn học</th>
+              <th>Học phần</th>
+              <th>Loại câu hỏi</th>
+              <th>Nội dung câu hỏi</th>
+              <th>Điểm</th>
+              <th>Độ khó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of questions; let i = index">
+              <tr (click)="show_info(item.id)">
+                <td>{{i+1}}</td>
+                <td>{{item.suB_NAME}}</td>
+                <td>{{item.paR_NAME}}</td>
+                <td>{{item.ansT_NAME}}</td>
+                <td [innerHTML]="(item.quecontent.length>6) ? (item.quecontent | slice:0:30)+'...':(item.quecontent)"
+                  class="d-flex"></td>
+                <td>{{item.quescore}}</td>
+                <td>{{item.quelevel}}</td>
+              </tr>
+              <tr id="{{'question_info_' + item.id}}" style="display: none;">
+                <td colspan="7">
+                  <table class="table">
+                    <thead>
+                      <tr class="bg-light">
+                        <th class="w-25 rounded-top text-center border-0">Chi tiết câu hỏi</th>
+                        <th class="border-0" style="background: #fff;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="2" class="text-left border-0 rounded-bottom bg-light pb-3"
+                          style="border-top-right-radius: .25rem;">
+                          <div class="col-12">
+                            <div class="row">
+                              <div class="col">
+                                <span><strong>Môn học:</strong> {{item.suB_NAME}}</span>
+                              </div>
+                              <div class="col">
+                                <span><strong>Học phần:</strong> {{item.paR_NAME}}</span>
+                              </div>
+                              <div class="col">
+                                <span><strong>Loại câu hỏi:</strong> {{item.ansT_NAME}}</span>
+                              </div>
+                              <div class="col text-center">
+                                <span><strong>Điểm:</strong> {{item.quescore}}</span>
+                              </div>
+                              <div class="col text-center">
+                                <span><strong>Độ khó:</strong> {{item.quelevel}}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 mt-2 py-2 rounded" style="background: #fff;">
+                            <span style="background: #fff;" class="d-flex"><strong>Câu hỏi:&nbsp;</strong> <span
+                                [innerHTML]="item.quecontent"></span></span>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <p class="mb-0"><strong>Đáp án:</strong></p>
+                            <div class="row">
+                              <ng-container *ngIf="item.ansT_ID == 2">
+                                <ng-container *ngFor="let item1 of item.list_option; let i = index">
+                                  <div class="offset-1 col-5 mt-2">
+                                    <div class="custom-control custom-radio">
+                                      <ng-container *ngIf="!item1.optiscorrect;else option_active">
+                                        <input type="radio" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled>
+                                      </ng-container>
+                                      <ng-template #option_active>
+                                        <input type="radio" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled
+                                          checked="checked">
+                                      </ng-template>
+                                      <ng-container [ngSwitch]="i">
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="0">A. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="1">B. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="2">C. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="3">D. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="4">E. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="5">F. {{item1.optcontent}}</label>
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container *ngIf="item.ansT_ID == 3">
+                                <ng-container *ngFor="let item1 of item.list_option; let i = index">
+                                  <div class="offset-1 col-5 mt-2">
+                                    <div class="custom-control custom-checkbox">
+                                      <ng-container *ngIf="!item1.optiscorrect;else option_active">
+                                        <input type="checkbox" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled>
+                                      </ng-container>
+                                      <ng-template #option_active>
+                                        <input type="checkbox" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled
+                                          checked="checked">
+                                      </ng-template>
+                                      <ng-container [ngSwitch]="i">
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="0">A. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="1">B. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="2">C. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="3">D. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="4">E. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="5">F. {{item1.optcontent}}</label>
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container *ngIf="item.ansT_ID == 4">
+                                <ng-container *ngFor="let item1 of item.list_option; let i = index">
+                                  <div class="offset-1 col-5 mt-2">
+                                    <div class="custom-control custom-radio">
+                                      <ng-container *ngIf="!item1.optiscorrect;else option_active">
+                                        <input type="radio" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled>
+                                      </ng-container>
+                                      <ng-template #option_active>
+                                        <input type="radio" id="{{'option_' + item1.id}}"
+                                          name="{{'answer_box_' + item.id}}" class="custom-control-input" disabled
+                                          checked="checked">
+                                      </ng-template>
+                                      <ng-container [ngSwitch]="i">
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="0">A. {{item1.optcontent}}</label>
+                                        <label class="custom-control-label" for="{{'option_' + item1.id}}"
+                                          *ngSwitchCase="1">B. {{item1.optcontent}}</label>
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                            </div>
+                          </div>
+                          <div class="col-12 mt-3 text-right">
+                            <a class="btn btn-danger btn-sm text-light" (click)="open_Delete($event,item.id)">Delete</a>
+                            <a class="btn btn-success btn-sm ml-2 text-light"
+                              (click)="showModal($event, item.id)">Update</a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="pre_id" value="null">
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><span id="modal_title"></span></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 style="text-decoration: underline;"><strong>Câu hỏi</strong></h5>
+        <!-- <hr class="bg-success"> -->
+        <div class="form-group row">
+          <div class="col-6">
+            <div class="row">
+              <label class="col-sm-4 col-form-label"><strong>Môn học :</strong></label>
+              <div class="col-sm-8">
+                <select id="field_1" class="form-control d-inline" [(ngModel)]="sub_id" (blur)="validate_sub_id()"
+                  (change)="toggle_part()">
+                  <ng-container *ngFor="let item of subjects">
+                    <ng-container *ngIf="!item.subjectChild">
+                      <option value="{{item.id}}">{{item.subname}}</option>
+                      <ng-container *ngFor="let item1 of subjects">
+                        <ng-container *ngIf="item1.parenT_ID == item.id">
+                          <option value="{{item1.id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{item1.subname}}</option>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </select>
+                <span id="valid_mes_1" class="invalid-feedback"></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <label class="col-sm-4 col-form-label"><strong>Học phần :</strong></label>
+              <div class="col-sm-8">
+                <ng-container *ngIf="sub_id == 0; else show_part">
+                  <select id="field_2" class="form-control d-inline" [(ngModel)]="question.paR_ID"
+                    (blur)="validate_par_id()" disabled>
+                    <ng-container *ngFor="let item of parts">
+                      <option value="{{item.id}}">{{item.parname}}</option>
+                    </ng-container>
+                  </select>
+                </ng-container>
+                <ng-template #show_part>
+                  <select id="field_2" class="form-control d-inline" [(ngModel)]="question.paR_ID"
+                    (blur)="validate_par_id()">
+                    <ng-container *ngFor="let item of parts">
+                      <option value="{{item.id}}">{{item.parname}}</option>
+                    </ng-container>
+                  </select>
+                </ng-template>
+                <span id="valid_mes_2" class="invalid-feedback"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4 col-form-label"><strong>Loại câu hỏi :</strong></div>
+              <div class="col-8">
+                <select class="form-control d-inline" id="field_3" [(ngModel)]="question.ansT_ID"
+                  (blur)="validate_anst_id()">
+                  <ng-container *ngFor="let item of answertypes">
+                    <option value="{{item.id}}">{{item.anstname}}</option>
+                  </ng-container>
+                </select>
+                <span id="valid_mes_3" class="invalid-feedback"></span>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col-5 col-form-label"><strong>Điểm :</strong></div>
+              <div class="col-7 pl-0">
+                <input type="number" class="form-control d-inline" [(ngModel)]="question.quescore" id="field_4" min="0"
+                  max="2" step="0.25" (blur)="validate_score()">
+              </div>
+              <span id="valid_mes_4" class="invalid-feedback pl-3" style="display: block;"></span>
+            </div>
+          </div>
+          <div class="col pl-0">
+            <div class="row">
+              <div class="col-5 col-form-label"><strong>Độ khó</strong></div>
+              <div class="col-7 pl-0">
+                <select class="form-control d-inline" id="field_5" [(ngModel)]="question.quelevel"
+                  (blur)="validate_level()">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <span id="valid_mes_5" class="invalid-feedback pl-3" style="display: block;"></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-12 col-form-label"><strong>Nội dung câu hỏi :</strong></div>
+          <div class="col-12" id="field_6">
+            <ckeditor [editor]="Editor" [(ngModel)]="question.quecontent" (blur)="validate_content()"></ckeditor>
+            <span id="valid_mes_6" class="invalid-feedback" style="display: block;"></span>
+          </div>
+        </div>
+        <hr class="bg-secondary">
+        <h5 style="text-decoration: underline;"><strong>Đáp án</strong></h5>
+        <ng-container *ngIf="!question.ansT_ID">
+        </ng-container>
+        <ng-container *ngIf="question.ansT_ID == 2">
+          <div class="form-group row mt-3">
+            <input type="hidden" id="option_id_1">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_1" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="1">
+                <label class="custom-control-label" for="option_p_1">Đáp án A:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_1"
+                (blur)="validate_option(1)"></textarea>
+              <span id="valid_mes_option_1" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <input type="hidden" id="option_id_2">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_2" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="2">
+                <label class="custom-control-label" for="option_p_2">Đáp án B:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_2"
+                (blur)="validate_option(2)"></textarea>
+              <span id="valid_mes_option_2" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <input type="hidden" id="option_id_3">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_3" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="3">
+                <label class="custom-control-label" for="option_p_3">Đáp án C:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_3"
+                (blur)="validate_option(3)"></textarea>
+              <span id="valid_mes_option_3" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_4">
+            <input type="hidden" id="option_id_4">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_4" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="4">
+                <label class="custom-control-label" for="option_p_4">Đáp án D:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_4"
+                (blur)="validate_option(4)"></textarea>
+              <span id="valid_mes_option_4" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_5">
+            <input type="hidden" id="option_id_5">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_5" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="5">
+                <label class="custom-control-label" for="option_p_5">Đáp án E:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_5"
+                (blur)="validate_option(5)"></textarea>
+              <span id="valid_mes_option_5" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_6">
+            <input type="hidden" id="option_id_6">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="option_p_6" name="option_box" [(ngModel)]="Achoose" class="custom-control-input"
+                  value="6">
+                <label class="custom-control-label" for="option_p_6">Đáp án F:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_6"
+                (blur)="validate_option(6)"></textarea>
+              <span id="valid_mes_option_6" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 offset-2">
+              <ng-container *ngIf="Achoose == ''; else mes_option">
+                <span id="valid_check_option" class="invalid-feedback" style="display: block;"></span>
+              </ng-container>
+              <ng-template #mes_option>
+
+              </ng-template>
+            </div>
+            <div class="col-6">
+              <a href="#" class="btn btn-success btn-sm float-right" (click)="show_option($event)"><i
+                  class="fa fa-plus"></i></a>
+              <a href="#" class="btn btn-danger btn-sm float-right mr-2" (click)="hide_option($event)"><i
+                  class="fa fa-remove"></i></a>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="question.ansT_ID == 3">
+          <div class="form-group row mt-3">
+            <input type="hidden" id="option_id_1">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_1" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_1">Đáp án A:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_1"
+                (blur)="validate_option(1)"></textarea>
+              <span id="valid_mes_option_1" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <input type="hidden" id="option_id_2">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_2" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_2">Đáp án B:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_2"
+                (blur)="validate_option(2)"></textarea>
+              <span id="valid_mes_option_2" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <input type="hidden" id="option_id_3">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_3" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_3">Đáp án C:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_3"
+                (blur)="validate_option(3)"></textarea>
+              <span id="valid_mes_option_3" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_4">
+            <input type="hidden" id="option_id_4">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_4" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_4">Đáp án D:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_4"
+                (blur)="validate_option(4)"></textarea>
+              <span id="valid_mes_option_4" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_5">
+            <input type="hidden" id="option_id_5">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_5" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_5">Đáp án E:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_5"
+                (blur)="validate_option(5)"></textarea>
+              <span id="valid_mes_option_5" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="form-group row" style="display: none;" id="extra_option_6">
+            <input type="hidden" id="option_id_6">
+            <div class="col-2 text-right">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="option_p_6" name="option_box" class="custom-control-input"
+                  (click)="update_count_choose()">
+                <label class="custom-control-label" for="option_p_6">Đáp án F:</label>
+              </div>
+            </div>
+            <div class="col-10">
+              <textarea cols="30" rows="2" class="form-control" id="option_content_6"
+                (blur)="validate_option(6)"></textarea>
+              <span id="valid_mes_option_6" class="invalid-feedback"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 offset-2">
+              <span id="valid_check_option" class="invalid-feedback" style="display: block;"></span>
+              <!-- <ng-container *ngIf="count_choose < 2; else mes_option">
+                
+              </ng-container>
+              <ng-template #mes_option>
+
+              </ng-template> -->
+            </div>
+            <div class="col-6">
+              <a href="#" class="btn btn-success btn-sm float-right" (click)="show_option($event)"><i
+                  class="fa fa-plus"></i></a>
+              <a href="#" class="btn btn-danger btn-sm float-right mr-2" (click)="hide_option($event)"><i
+                  class="fa fa-remove"></i></a>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="question.ansT_ID == 4">
+          <div class="form-group row mt-3">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-3 col-form-label"><strong>Chọn đáp án: </strong></div>
+                <div class="col-3 pl-0">
+                  <select class="form-control d-inline" [(ngModel)]="YN_box">
+                    <option value="1">Đúng/Sai</option>
+                    <option value="2">Yes/No</option>
+                    <option value="3">True/False</option>
+                    <option value="4">Đồng ý/Không đồng ý</option>
+                  </select>
+                </div>
+                <ng-container *ngIf="YN_box == '1'">
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" [(ngModel)]="id_1">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_1" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="1">
+                          <label class="custom-control-label" for="option_p_1"><span
+                              id="YN_box_content_1">Đúng</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" [(ngModel)]="id_2">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_2" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="2">
+                          <label class="custom-control-label" for="option_p_2"><span
+                              id="YN_box_content_2">Sai</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="YN_box == '2'">
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_1">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_1" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="1">
+                          <label class="custom-control-label" for="option_p_1"><span
+                              id="YN_box_content_1">Yes</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_2">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_2" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="2">
+                          <label class="custom-control-label" for="option_p_2"><span
+                              id="YN_box_content_2">No</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="YN_box == '3'">
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_1">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_1" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="1">
+                          <label class="custom-control-label" for="option_p_1"><span
+                              id="YN_box_content_1">True</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_2">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_2" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="2">
+                          <label class="custom-control-label" for="option_p_2"><span
+                              id="YN_box_content_2">False</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="YN_box == '4'">
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_1">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_1" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="1">
+                          <label class="custom-control-label" for="option_p_1"><span id="YN_box_content_1">Đồng
+                              ý</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 my-auto">
+                    <div class="row">
+                      <input type="hidden" id="option_id_2">
+                      <div class="col-12 text-center">
+                        <div class="custom-control custom-radio">
+                          <input type="radio" id="option_p_2" name="option_box" [(ngModel)]="Bchoose"
+                            class="custom-control-input" value="2">
+                          <label class="custom-control-label" for="option_p_2"><span id="YN_box_content_2">Không đồng
+                              ý</span></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 offset-6">
+              <ng-container *ngIf="Bchoose == ''; else mes_option">
+                <span id="valid_check_option" class="invalid-feedback" style="display: block;"></span>
+              </ng-container>
+              <ng-template #mes_option>
+
+              </ng-template>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modal.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="save()" class="btn btn-success" id="button_modal"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Xóa câu hỏi</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalDelete.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="delete_message"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modalDelete.hide()" class="btn btn-danger">Thoát</button>
+        <button type="button" (click)="delete()" class="btn btn-success">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="id_delete">

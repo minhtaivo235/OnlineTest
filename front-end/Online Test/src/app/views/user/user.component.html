@@ -1,0 +1,174 @@
+<div class="card">
+  <div class="card-header text-right">
+    <button type="button" (click)="showModal()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped table-hover bg-white">
+      <thead class="bg-info">
+        <tr>
+          <th>Tài Khoản</th>
+          <th>Họ tên</th>
+          <th>GV Bộ Môn</th>
+          <th>Ngày sinh</th>
+          <th>Số điện thoại</th>
+          <th>Email</th>
+          <th>Active</th>
+          <th style="width:70px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of users">
+          <td>{{row.useaccount}}</td>
+          <td>{{row.usefirstname + " " +row.uselastname}}</td>
+          <td>{{row.user_Types.usetname}}</td>
+          <td>{{row.usedob | date:'yyyy-MM-dd'}}</td>
+          <td>{{row.usephone}}</td>
+          <td>{{row.useemail}}</td>
+          <td>{{row.useisactive}}</td>
+          <td>
+            <a href="#" (click)="showModal($event, row.id)"><i class="fa fa-info-circle"></i></a>
+            <a href="#" (click)="confirmDelete($event, row.id)"><i class="fa fa-trash-o text-danger"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left"><i class="fa fa-user">user</i></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Loại người dùng :</label>
+          <div class="col-sm-9">
+            <select id="field_8" class="form-control d-inline" [(ngModel)]="user.useT_ID" >
+              <ng-container *ngFor="let item1 of usertypes; let i = index">
+                <!-- //<ng-container *ngIf="!item1.subjectChild"> -->
+                  <option  [value]="item1.id">{{item1.usetname}}</option>
+               <!-- </ng-container> -->
+              </ng-container>
+            </select>
+            <a href="#" class="text-success pl-2" id="edit_8" (click)="Edit($event,8)"><i
+                class="fa fa-pencil-square-o fa-2x align-middle"></i></a>
+                <span id="valid_mes_3" class="invalid-feedback"></span>
+          </div>
+        </div>
+        
+
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Tài khoản</label>
+          <div class="col-sm-9">
+            <input type="text" id="field_1" class="form-control d-inline" [(ngModel)]="user.useaccount" placeholder="Account">
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Mật Khẩu</label>
+            <div class="col-sm-9">
+              <input type="password" id="field_2" class="form-control d-inline" [(ngModel)]="user.useenC_PASSWORD" placeholder="PassWord">
+              <a href="#" class="text-success pl-2" id="edit_2"><i class="fa fa-pencil-square-o fa-2x align-middle"
+                (click)="Edit($event,2)"></i></a>
+            </div>
+          </div>
+        
+          <div class="form-group row" id="samepw">
+              <label class="col-sm-3 col-form-label">Xác nhận Mật Khẩu</label>
+              <div class="col-sm-9">
+                <input type="password" (blur)="confirm()" class="form-control d-inline" [(ngModel)]="samepassw" id="samepass" placeholder="Confirm PassWord">
+                <span id="messagepw" style="display: none;" class="invalid-feedback"></span>
+              </div>
+            </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Họ và tên</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control d-inline" id="field3" [(ngModel)]="user.usefirstname" placeholder="First Name">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control d-inline" id="field_3" [(ngModel)]="user.uselastname" placeholder="Last Name">
+            <a href="#" class="text-success pl-2" id="edit_3"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,3)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Sinh Nhật</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control d-inline"id="field_4" [ngModel]="user.usedob | date:'yyyy-MM-dd'"
+            (input)="user.usedob=parseDate($event.target.value)" >
+            <a href="#" class="text-success pl-2" id="edit_4"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,4)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Gender</label>
+          <div class="col-sm-6">
+
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input"
+                [(ngModel)]="user.usegender" [value]="true" [checked]="user.usegender==true">
+              <label class="custom-control-label" for="customRadio1">Male</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio2" name="customRadio" [(ngModel)]="user.usegender"
+                class="custom-control-input" [value]="false" [checked]="user.usegender==false">
+              <label class="custom-control-label" for="customRadio2">Female</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Email</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control d-inline" id="field_5"[(ngModel)]="user.useemail" placeholder="Email">
+            <a href="#" class="text-success pl-2" id="edit_5"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,5)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Phone</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control d-inline" id="field_6"[(ngModel)]="user.usephone" placeholder="Phone">
+            <a href="#" class="text-success pl-2" id="edit_6"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,6)"></i></a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Active</label>
+          <div class="col-sm-6">
+
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio3" name="customRadio2" class="custom-control-input"
+                [(ngModel)]="user.useisactive" [value]="true" [checked]="user.useisactive==true">
+              <label class="custom-control-label" for="customRadio3">Yes</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadio4" name="customRadio2" [(ngModel)]="user.useisactive"
+                class="custom-control-input" [value]="false" [checked]="user.useisactive==false">
+              <label class="custom-control-label" for="customRadio4">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Date</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control d-inline" id="field_7" [ngModel]="user.usedate | date:'yyyy-MM-dd'"
+            (input)="user.usedate=parseDate($event.target.value)" >
+            <a href="#" class="text-success pl-2" id="edit_7"><i class="fa fa-pencil-square-o fa-2x align-middle"
+              (click)="Edit($event,7)"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="close()" class="btn btn-primary">Close</button>
+        <button type="button" (click)="save()" class="btn btn-success">Save</button>
+      </div>
+    </div>
+  </div>

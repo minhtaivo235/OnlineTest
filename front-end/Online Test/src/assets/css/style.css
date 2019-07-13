@@ -1,0 +1,49 @@
+/*Style for user*/
+.edit_icon {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.btn-outline-info:hover i {
+  color: black !important;
+}
+
+.btn-outline-warning:hover i {
+  color: black !important;
+}
+
+.btn-outline-danger:hover i {
+  color: black !important;
+}
+
+.fa-angle-up.close {
+  transform: rotate(0deg);
+  transition: transform 0.3s linear;
+}
+.fa-angle-up.open {
+  transform: rotate(180deg);
+  transition: transform 0.3s linear;
+}
+.ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+/*Style for question*/
+.khung {
+    position: relative;
+    margin-bottom: 35px;
+    margin-top: 20px;
+}
+.vachngang {
+    border-top: 1px solid #6351ce;
+}
+.danhmuc {
+    font-weight: bold;
+    font-size: 20px;
+    background: #fff;
+    position: absolute;
+    top: -15px;
+    left: 40%;
+    padding-right: 20px;
+}
+
